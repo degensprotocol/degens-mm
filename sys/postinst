@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -e
+
+if ! getent passwd | grep -q "^degens:" ; then
+    echo "Adding user and group 'degens'"
+    useradd -r -U -s /bin/false degens
+fi
+
+if [ ! -d "/var/degens/mm" ]; then
+  echo "Creating directory '/var/degens/mm'"
+  mkdir -p /var/degens/mm
+
+  chown -R degens:degens /var/degens/mm
+fi
+
+mkdir -p /etc/degens-mm/
+
+
+systemctl daemon-reload
+
+sudo deb-systemd-invoke condrestart degens-mm

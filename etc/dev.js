@@ -1,10 +1,6 @@
 module.exports = {
   privateKey: '0x6f0590cd2507d54c0c6f75968787e2f188a1b20f461c227a20bff4fcdb9e5ad0',
 
-  // DB
-
-  dbPath: 'dbs/dev.db',
-
   // Orderbook connection
 
   orderbookEndpoint: 'ws://localhost:7900',

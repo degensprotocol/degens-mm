@@ -1,10 +1,6 @@
 module.exports = {
   privateKey: 'REPLACE_ME',
 
-  // DB
-
-  dbPath: 'dbs/mainnet.db',
-
   // Orderbook connection
 
   orderbookEndpoint: 'wss://degens.com/ws',

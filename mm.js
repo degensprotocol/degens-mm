@@ -14,13 +14,16 @@ const configPath = process.argv[2];
 if (!configPath) throw(`need config path as argument`);
 const config = require(configPath);
 
+const dbPath = process.argv[3];
+if (!configPath) throw(`need db path as argument`);
+
 
 let myAddress = config.privateKey ? (new ethers.Wallet(config.privateKey)).address.toLowerCase() : undefined;
 console.log(`Using address: ${myAddress}`);
 
 
 
-const db = new Database(config.dbPath);
+const db = new Database(dbPath);
 
 let lastEventUpdate = {};
 

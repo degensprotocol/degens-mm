@@ -1,0 +1,13 @@
+[Unit]
+Description=degens mm
+
+[Service]
+Environment="PATH=/bin:/usr/local/bin:/usr/bin"
+User=degens
+ExecStart=/usr/bin/node /usr/degens/mm/mm-spawner.js /etc/degens-mm/ /var/degens/mm/
+LimitNOFILE=8000
+Restart=always
+RestartSec=30s
+
+[Install]
+WantedBy=multi-user.target

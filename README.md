@@ -25,7 +25,7 @@ Edit the `etc/mainnet.js` config file:
 
 Run the bot:
 
-    node mm.js ./etc/mainnet.js
+    node mm.js ./etc/mainnet.js ./mainnet.db
 
 
 ## Strategies
