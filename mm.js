@@ -1,9 +1,11 @@
 const Database = require('better-sqlite3');
 const ethers = require('ethers');
 
-const DegensClient = require('./jslib/DegensClient');
-const DegensUtils = require('./jslib/DegensUtils');
-const DegensContractLib = require('./jslib/DegensContractLib');
+module.paths.push('.', '/usr/degens');
+const DegensClient = require('jslib/DegensClient');
+const DegensUtils = require('jslib/DegensUtils');
+const DegensContractLib = require('jslib/DegensContractLib');
+
 const ReflectedPrices = require('./ReflectedPrices');
 
 

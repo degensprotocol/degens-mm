@@ -10,6 +10,7 @@ fi
 if [ ! -d "/var/degens/mm" ]; then
   echo "Creating directory '/var/degens/mm'"
   mkdir -p /var/degens/mm
+  mkdir -p /var/degens/mm/dbs
 
   chown -R degens:degens /var/degens/mm
 fi
