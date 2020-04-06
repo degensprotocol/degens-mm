@@ -84,9 +84,8 @@ function doUpdates() {
             lastEventUpdate[event.eventId] = now;
 
             if (event.status) continue; // game is probably live
-
             let kickoff = parseInt(event.event.kickoff);
-            if (now > kickoff - config.orderExpiryTimeSeconds) continue; // game will start soon
+            if (now > kickoff - config.orderExpiryTimeSeconds) return; // game will start soon
             let expiry = Math.min(now + config.orderExpiryTimeSeconds, kickoff);
 
             let marketLookup = DegensUtils.constructMarketMap(event.markets);
@@ -128,6 +127,7 @@ function doUpdates() {
 function genericCompare(val, test) {
     if (typeof(test) === 'string') return val === test;
     else if (typeof(test) === 'function') return test(val);
+    else if (typeof(test) === 'object' && Array.prototype.isPrototypeOf(test)) return !!test.find(item => item === val);
     else throw(`unknown type of test in genericCompare: ${typeof(test)}`);
 }
 
@@ -156,6 +156,8 @@ function unpackAndSortOrders(orders) {
 
 
 function computeMyPrices(event, marketLookup, tokenSym) {
+    let now = DegensUtils.getCurrTime();
+
     let prices = rc.getEvent(event.eventId);
     if (!prices) return undefined;
 
@@ -232,6 +234,7 @@ function computeMyPrices(event, marketLookup, tokenSym) {
 
     for (let marketId of Object.keys(output)) {
         let p = output[marketId];
+        let position = currPositions && currPositions[marketId] && currPositions[marketId].tokens[tokenSym];
 
         let strat = {
             minMarkup: 1.01,
@@ -239,6 +242,15 @@ function computeMyPrices(event, marketLookup, tokenSym) {
             ...config.defaultStrategy,
             ...p.strat,
         };
+
+        if (strat.custom) {
+            let extraInfo = {
+                position,
+                timeToKickoff: parseInt(event.event.kickoff) - now,
+            };
+
+            strat.custom(strat, extraInfo);
+        }
 
         let baseAmount = strat.baseAmount;
 
@@ -252,8 +264,6 @@ function computeMyPrices(event, marketLookup, tokenSym) {
 
         buyMarkup = Math.max(buyMarkup, strat.minMarkup);
         sellMarkup = Math.max(sellMarkup, strat.minMarkup);
-
-        let position = currPositions && currPositions[marketId] && currPositions[marketId].tokens[tokenSym];
 
         if (position) {
             let myPos = ethers.utils.bigNumberify(position.pos);
@@ -271,6 +281,11 @@ function computeMyPrices(event, marketLookup, tokenSym) {
                 if (sellAmount < 0.1) sellAmount = 0;
                 sellMarkup = scaleMarkup(p.markup, (1 + currPriceBand));
                 buyMarkup = scaleMarkup(p.markup, 1 / (1 + currPriceBand));
+            }
+
+            if (strat.maxPriceBand !== undefined && currPriceBand > strat.maxPriceBand) {
+                if (myPos.gt(0)) buyAmount = 0;
+                else sellAmount = 0;
             }
         }
 

@@ -35,14 +35,28 @@ When figuring out what order to post, the bot will search through the list of st
 * `oddsSource`: The name of the odds source (ie `betfair`).
 * `sport`: The sport (ie `Soccer`).
 * `league`: The league (ie `NFL`).
+* `marketType`: The type of the market (`1x2`, `spread`, or `total`)
 
-The above can also be specified as functions, for example `(v) => v === 'NFL' || v === 'NCAAF'`
+The above can also be specified as arrays, to match multiple: `league: ['NFL', 'NCAAF']`
+
+Or as functions, for example `(v) => v === 'NFL' || v === 'NCAAF'`
 
 The matched strategy should also have various other parameters specified:
 
 * `baseAmount`: The size of orders to make, in token units (by default, DAI)
 * `markupMult`: A multiplier to apply to the markup from the received odds. A markup of `1.01` will apply a 1% markup, and `0.99` will apply a 1% discount.
 * `oddsLimit`: A limit on the odds that the bot will post. `1.5` or `3` mean the same thing: don't post odds less than `1.5` or `3` (decimal)
+* `maxPriceBand`: Normally when the bot's order is totally filled, it will re-post an order at a higher price and smaller amount. This will limit how many times it does that. Set it to `0` to stop it from re-posting at all.
+
+### Custom modifiers
+
+You can run custom code to modify your strategy by passing a function to the `custom` field.
+
+For example, here is how to stop making orders an hour before kickoff:
+
+    custom: (strat, info) => {
+        if (info.timeToKickoff <= 60*60) strat.baseAmount = 0;
+    },
 
 
 ## Market type limits
