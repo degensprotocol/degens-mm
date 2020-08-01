@@ -8,9 +8,9 @@ let configs = fs.readdirSync(configsDir);
 
 configs = configs.map(c => {
     let m = c.match(/^([-_\w]+)\.js$/);
-    if (!m) throw(`unexpected config file name: ${c}`);
+    if (!m) return undefined;
     return m[1];
-});
+}).filter(c => c !== undefined);
 
 if (!configs.length) throw(`no config files found in dir ${configsDir}`);
 
