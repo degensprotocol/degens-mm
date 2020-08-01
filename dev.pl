@@ -9,7 +9,7 @@ use BuildLib;
 my $cmd = shift;
 
 if ($cmd eq 'serve') {
-  sys("node mm.js ./etc/dev.js");
+  sys("node mm.js ./etc/dev.js ./dev.db");
 } elsif ($cmd eq 'dist') {
   BuildLib::fpm({
     types => [qw/ deb /],
