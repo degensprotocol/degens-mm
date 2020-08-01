@@ -85,7 +85,7 @@ function doUpdates() {
 
             if (event.status) continue; // game is probably live
             let kickoff = parseInt(event.event.kickoff);
-            if (now > kickoff - config.orderExpiryTimeSeconds) return; // game will start soon
+            if (now > kickoff - config.orderExpiryTimeSeconds) continue; // game will start soon
             let expiry = Math.min(now + config.orderExpiryTimeSeconds, kickoff);
 
             let marketLookup = DegensUtils.constructMarketMap(event.markets);
