@@ -8,8 +8,8 @@ module.exports = {
 
   // Reflector connection
 
-  reflectorUrl: 'REPLACE_ME',
-  reflectorApiKey: 'REPLACE_ME',
+  reflectorUrl: 'https://book.degens.com/reflector/',
+  reflectorApiKey: 'IlC9fsLudbyYLCcqQVyPgS',
 
   // Network config
 
@@ -20,7 +20,7 @@ module.exports = {
 
   // Order config
 
-  orderExpiryTimeSeconds: 60 * 5,
+  orderExpiryTimeSeconds: 60 * 10,
   orderRefreshTimeSeconds: 60,
 
   marketTypeLimits: {

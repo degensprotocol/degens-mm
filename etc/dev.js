@@ -19,7 +19,7 @@ module.exports = {
 
   // Order config
 
-  orderExpiryTimeSeconds: 60 * 5,
+  orderExpiryTimeSeconds: 60 * 10,
   orderRefreshTimeSeconds: 60,
 
   marketTypeLimits: {
