@@ -266,7 +266,7 @@ function computeMyPrices(event, marketLookup, tokenSym) {
         sellMarkup = Math.max(sellMarkup, strat.minMarkup);
 
         if (position) {
-            let myPos = ethers.utils.bigNumberify(position.pos);
+            let myPos = ethers.BigNumber.from(position.pos);
             let atRisk = myPos.abs().mul(myPos.gt(0) ? position.avgPrice : DegensUtils.MAX_PRICE - position.avgPrice).div(DegensUtils.MAX_PRICE);
             atRisk = parseFloat(ethers.utils.formatEther(atRisk));
             let currPriceBand = positionToPriceBand(baseAmount, atRisk, 0.6);
@@ -362,7 +362,7 @@ function constructOrder(marketId, direction, amount, price, expiry) {
     if (existingOrder) {
         if (price === existingOrder.price && now - existingOrder.timestamp < (pollIntervalSeconds*2)) return undefined; // don't refresh orders too often
 
-        let existingOrderAmount = ethers.utils.bigNumberify(existingOrder.amount);
+        let existingOrderAmount = ethers.BigNumber.from(existingOrder.amount);
         let amountRemaining = existingOrderAmount.sub(dc.data.orderFills[myAddress].recs[existingOrder.fillHash] || 0);
 
         if (amountRemaining.sub(amount).abs().gt(ethers.utils.parseEther('0.1'))) {
